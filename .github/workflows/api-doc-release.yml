@@ -30,9 +30,12 @@ jobs:
 
       - name: Tag new release
         run: |
+          echo "List tags"
           git tag
+          echo "List branches"
           git branch
-          git tag -a -m "Tagging version ${{ env.DOCS_VERSION }}" technical-docs-v${{ env.DOCS_VERSION }} technical-docs
+          echo "Do tagging"
+          git tag -a -m "Tagging version ${{ env.DOCS_VERSION }}" technical-docs-v${{ env.DOCS_VERSION }}
           git push origin technical-docs-v${{ env.DOCS_VERSION }}
 
 #      - name: Create draft release
