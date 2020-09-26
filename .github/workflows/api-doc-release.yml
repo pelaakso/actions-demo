@@ -1,0 +1,29 @@
+name: Create new draft release of technical documentation
+
+# Run this workflow every time a new commit pushed to branch technical-docs
+on:
+  push:
+    branches:
+      # master only while developing
+      - master
+      - technical-docs
+
+jobs:
+  create-draft-release:
+    name: Create draft release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Determine version
+        run: "echo ::set-env name=GITHUB_SHA_SHORT::$(grep VERSION= technical/version.txt | sed -e s/VERSION=//)"
+
+#      - name: Create draft release
+#        run: |
+#          gh release create
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
