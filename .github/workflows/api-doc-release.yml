@@ -37,12 +37,12 @@ jobs:
           echo "Do tagging"
           git config user.name github-actions
           git config user.email pelaakso@users.noreply.github.com
-          git tag -a -m "Tagging version ${{ env.DOCS_VERSION }}" technical-docs-v${{ env.DOCS_VERSION }}
-          git push origin technical-docs-v${{ env.DOCS_VERSION }}
+          #git tag -a -m "Tagging version ${{ env.DOCS_VERSION }}" technical-docs-v${{ env.DOCS_VERSION }}
+          #git push origin technical-docs-v${{ env.DOCS_VERSION }}
 
-#      - name: Create draft release
-#        run: |
-#          gh release create
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create draft release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create technical-docs-v${{ env.DOCS_VERSION }} 'technical/api.txt#API specification' --draft --target technical-docs --title 'Technical documentation release ${{ env.DOCS_VERSION }}' --notes 'TBD: add description of changes'
 
