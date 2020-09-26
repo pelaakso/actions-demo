@@ -5,8 +5,10 @@ on:
   push:
     branches:
       # master only while developing
-      - master
-      - technical-docs
+      - 'master'
+      - 'technical-docs'
+    tags-ignore:
+      - 'technical-docs-v*'
 
 jobs:
   create-draft-release:
@@ -21,8 +23,13 @@ jobs:
       - name: Determine version
         run: "echo ::set-env name=DOCS_VERSION::$(grep VERSION= technical/version.txt | sed -e s/VERSION=//)"
 
-      - name: Use version
+      - name: Debug version
         run: "echo Documentation version: $DOCS_VERSION"
+
+      - name: Tag new release
+        run: |
+          git tag -a -m "Tagging version ${{ $DOCS_VERSION }}" technical-docs-v${{ $DOCS_VERSION }} technical-docs
+          git push origin technical-docs-v${{ $DOCS_VERSION }}
 
 #      - name: Create draft release
 #        run: |
