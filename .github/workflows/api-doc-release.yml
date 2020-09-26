@@ -5,7 +5,7 @@ on:
   push:
     branches:
       # master only while developing
-      - 'master'
+      #- 'master'
       - 'technical-docs'
     tags-ignore:
       - 'technical-docs-v*'
@@ -37,8 +37,8 @@ jobs:
           echo "Do tagging"
           git config user.name github-actions
           git config user.email pelaakso@users.noreply.github.com
-          #git tag -a -m "Tagging version ${{ env.DOCS_VERSION }}" technical-docs-v${{ env.DOCS_VERSION }}
-          #git push origin technical-docs-v${{ env.DOCS_VERSION }}
+          git tag -a -m "Tagging version ${{ env.DOCS_VERSION }}" technical-docs-v${{ env.DOCS_VERSION }}
+          git push origin technical-docs-v${{ env.DOCS_VERSION }}
 
       - name: Create draft release
         env:
