@@ -28,8 +28,8 @@ jobs:
 
       - name: Tag new release
         run: |
-          git tag -a -m "Tagging version ${{ $DOCS_VERSION }}" technical-docs-v${{ $DOCS_VERSION }} technical-docs
-          git push origin technical-docs-v${{ $DOCS_VERSION }}
+          git tag -a -m "Tagging version ${{ env.DOCS_VERSION }}" technical-docs-v${{ env.DOCS_VERSION }} technical-docs
+          git push origin technical-docs-v${{ env.DOCS_VERSION }}
 
 #      - name: Create draft release
 #        run: |
