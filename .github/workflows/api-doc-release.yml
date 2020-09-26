@@ -1,0 +1,48 @@
+name: Create new draft release of technical documentation
+
+# Run this workflow every time a new commit pushed to branch technical-docs
+on:
+  push:
+    branches:
+      # master only while developing
+      #- 'master'
+      - 'technical-docs'
+    tags-ignore:
+      - 'technical-docs-v*'
+
+jobs:
+  create-draft-release:
+    name: Create draft release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Determine version
+        run: "echo ::set-env name=DOCS_VERSION::$(grep VERSION= technical/version.txt | sed -e s/VERSION=//)"
+
+      - name: Debug version
+        run: "echo Documentation version: $DOCS_VERSION"
+
+      - name: Tag new release
+        run: |
+          echo "List tags"
+          git tag
+          echo "List branches"
+          git branch
+          echo "Do tagging"
+          git config user.name github-actions
+          git config user.email pelaakso@users.noreply.github.com
+          git tag -a -m "Tagging version ${{ env.DOCS_VERSION }}" technical-docs-v${{ env.DOCS_VERSION }}
+          git push origin technical-docs-v${{ env.DOCS_VERSION }}
+
+      - name: Create draft release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create technical-docs-v${{ env.DOCS_VERSION }} 'technical/api.txt#API specification' --draft --target technical-docs --title 'Technical documentation release ${{ env.DOCS_VERSION }}' --notes 'TBD: add description of changes'
+
