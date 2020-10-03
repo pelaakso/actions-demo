@@ -1,6 +1,6 @@
 name: Build and test
 
-# Run this workflow every time a new commit pushed to branch technical-docs
+# Run this workflow every time a new commit pushed to any branch except technical-docs
 on:
   push:
     branches-ignore:
