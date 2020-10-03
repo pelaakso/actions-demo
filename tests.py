@@ -6,5 +6,5 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual('foo'.upper(), 'FOO')
 
     def test_lower(self):
-        self.assertEqual('FOO'.lower(), 'foO')
+        self.assertEqual('FOO'.lower(), 'foo')
 
