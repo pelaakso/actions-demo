@@ -1,2 +1,6 @@
 # Mac shit
 .DS_Store
+
+# Python stuff
+__pycache__/
+
