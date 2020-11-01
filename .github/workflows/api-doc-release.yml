@@ -24,7 +24,7 @@ jobs:
         run: "echo DOCS_VERSION=$(grep VERSION= technical/version.txt | sed -e s/VERSION=//) >> $GITHUB_ENV"
 
       - name: Debug version
-        run: "echo ::debug::Documentation version: $DOCS_VERSION"
+        run: "echo ::debug::Documentation version: {{ $DOCS_VERSION }}"
 
       - name: Create draft release
         env:
