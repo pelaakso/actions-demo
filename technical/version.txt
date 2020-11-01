@@ -1,2 +1,2 @@
 # Update the latest documentation version below, no spaces around equals
-VERSION=3.27
+VERSION=3.28
