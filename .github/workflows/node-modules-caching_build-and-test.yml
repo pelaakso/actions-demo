@@ -38,9 +38,6 @@ jobs:
       - name: 'Compress node_modules tar'
         run: bzip2 -9 node_modules.tar
 
-      - name: 'Debug: list files'
-        run: ls -l
-
       - name: 'Cache node_modules as Artifact'
         uses: actions/upload-artifact@v2
         with:
@@ -72,17 +69,11 @@ jobs:
           name: node-modules-cache-${{ github.run_id }}
           path: node-modules-caching
 
-      - name: 'Debug: list files'
-        run: ls -lR
-
       - name: 'Uncompress node_modules tar'
         run: bunzip2 -v node_modules.tar.bz2
 
       - name: 'Untar node_modules'
         run: tar xvf node_modules.tar
-
-      - name: 'Debug: list files 2'
-        run: ls -lR
 
       - name: Run capitalize
         run: npm run capitalize
@@ -112,6 +103,9 @@ jobs:
 
       - name: 'Uncompress node_modules tar'
         run: bunzip2 node_modules.tar.bz2
+
+      - name: 'Untar node_modules'
+        run: tar xvf node_modules.tar
 
       - name: Run capitalize
         run: npm run capitalize
