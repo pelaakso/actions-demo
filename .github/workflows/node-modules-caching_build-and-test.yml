@@ -1,0 +1,96 @@
+name: Build and test - node-modules-caching
+
+# Run this workflow every time a new commit pushed to any branch except technical-docs
+on:
+  push:
+    paths:
+      - 'node-modules-caching/**'
+
+defaults:
+  run:
+    working-directory: 'node-modules-caching'
+
+jobs:
+  npm-install-and-cache:
+    name: 'Install dependencies and cache node_modules'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: 'Setup Node'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: 'Install deps'
+        run: npm ci
+
+      - name: 'Tar node_modules'
+        run: tar cf node_modules.tar node_modules
+
+      - name: 'Compress node_modules tar'
+        run: bzip2 -9 node_modules.tar
+
+      - name: 'Cache node_modules as Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: node-modules-cache-${{ github.run_id }}
+          path: node_modules.tar.bz2
+
+  capitalize1:
+    name: capitalize1
+    needs: npm-install-and-cache
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: 'Setup Node'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: 'Restore node_modules cache'
+        uses: actions/download-artifact@v2
+        with:
+          name: node-modules-cache-${{ github.run_id }}
+
+      - name: 'Uncompress node_modules tar'
+        run: bunzip2 node_modules.tar.bz2
+
+      - name: Run capitalize
+        run: npm run capitalize
+
+  capitalize2:
+    name: capitalize2
+    needs: npm-install-and-cache
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: 'Setup Node'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: 'Restore node_modules cache'
+        uses: actions/download-artifact@v2
+        with:
+          name: node-modules-cache-${{ github.run_id }}
+
+      - name: 'Uncompress node_modules tar'
+        run: bunzip2 node_modules.tar.bz2
+
+      - name: Run capitalize
+        run: npm run capitalize
