@@ -25,7 +25,7 @@ jobs:
       - name: 'Setup Node'
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '14'
           cache: 'npm'
           cache-dependency-path: 'node-modules-caching/package-lock.json'
 
@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-modules-cache-${{ github.run_id }}
-          path: node_modules.tar.bz2
+          path: node-modules-caching/node_modules.tar.bz2
 
   capitalize1:
     name: capitalize1
@@ -57,7 +57,7 @@ jobs:
       - name: 'Setup Node'
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '14'
           cache: 'npm'
 
       - name: 'Restore node_modules cache'
@@ -84,7 +84,7 @@ jobs:
       - name: 'Setup Node'
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '14'
           cache: 'npm'
 
       - name: 'Restore node_modules cache'
