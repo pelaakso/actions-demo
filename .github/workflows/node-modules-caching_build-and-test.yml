@@ -33,10 +33,13 @@ jobs:
         run: npm ci
 
       - name: 'Tar node_modules'
-        run: tar cf node_modules.tar node_modules
+        run: tar cvf node_modules.tar node_modules
 
       - name: 'Compress node_modules tar'
         run: bzip2 -9 node_modules.tar
+
+      - name: 'Debug: list files'
+        run: ls -l
 
       - name: 'Cache node_modules as Artifact'
         uses: actions/upload-artifact@v2
@@ -66,6 +69,9 @@ jobs:
         with:
           name: node-modules-cache-${{ github.run_id }}
           path: node-modules-caching/node_modules.tar.bz2
+
+      - name: 'Debug: list files'
+        run: ls -l
 
       - name: 'Uncompress node_modules tar'
         run: bunzip2 node_modules.tar.bz2
