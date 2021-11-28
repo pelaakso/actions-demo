@@ -11,6 +11,7 @@ defaults:
     working-directory: 'node-modules-caching'
 
 jobs:
+  # This job installs NPM dependencies and caches them as a build artifact
   npm-install-and-cache:
     name: 'Install dependencies and cache node_modules'
 
@@ -44,6 +45,7 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+  # A demo job depending on node_modules
   capitalize1:
     name: capitalize1
     needs: npm-install-and-cache
@@ -76,6 +78,7 @@ jobs:
       - name: Run capitalize
         run: npm run capitalize
 
+  # A demo job depending on node_modules
   capitalize2:
     name: capitalize2
     needs: npm-install-and-cache
