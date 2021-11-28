@@ -3,10 +3,8 @@ name: Build and test - node-modules-caching
 # Run this workflow every time a new commit pushed to any branch except technical-docs
 on:
   push:
-    #paths:
-    #  - 'node-modules-caching/**'
-    branches:
-      - 'node-modules-caching'
+    paths:
+      - 'node-modules-caching/**'
 
 defaults:
   run:
