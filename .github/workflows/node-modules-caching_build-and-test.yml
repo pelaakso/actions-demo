@@ -78,6 +78,9 @@ jobs:
       - name: 'Uncompress node_modules tar'
         run: bunzip2 -v node_modules.tar.bz2
 
+      - name: 'Untar node_modules'
+        run: tar xvf node_modules.tar
+
       - name: 'Debug: list files 2'
         run: ls -lR
 
