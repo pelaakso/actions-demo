@@ -46,6 +46,8 @@ jobs:
         with:
           name: node-modules-cache-${{ github.run_id }}
           path: node-modules-caching/node_modules.tar.bz2
+          if-no-files-found: error
+          retention-days: 1
 
   capitalize1:
     name: capitalize1
@@ -71,7 +73,7 @@ jobs:
           path: node-modules-caching/node_modules.tar.bz2
 
       - name: 'Debug: list files'
-        run: ls -l
+        run: ls -lR
 
       - name: 'Uncompress node_modules tar'
         run: bunzip2 node_modules.tar.bz2
