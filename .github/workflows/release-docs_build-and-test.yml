@@ -5,6 +5,8 @@ on:
   push:
     branches-ignore:
       - 'technical-docs'
+    paths:
+      - 'release-docs/**'
 
 jobs:
   build-and-test:
@@ -44,4 +46,3 @@ jobs:
       - name: Run tests
         run: |
           python -m unittest
-
