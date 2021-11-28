@@ -9,6 +9,8 @@ Instead of `npm install`ing dependencies in each and every job
 
 # Description
 
+The full workflow file can be found in [node-modules-caching_build-and-test.yml](../.github/workflows/node-modules-caching_build-and-test.yml).
+
 ## Install and cache dependencies
 
 The `npm-install-and-cache` job installs NPM dependencies and stores then as a build Artifact.
