@@ -76,7 +76,10 @@ jobs:
         run: ls -lR
 
       - name: 'Uncompress node_modules tar'
-        run: bunzip2 node_modules.tar.bz2
+        run: bunzip2 -v node_modules.tar.bz2
+
+      - name: 'Debug: list files 2'
+        run: ls -lR
 
       - name: Run capitalize
         run: npm run capitalize
@@ -102,7 +105,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-modules-cache-${{ github.run_id }}
-          path: node-modules-caching/node_modules.tar.bz2
+          path: node-modules-caching
 
       - name: 'Uncompress node_modules tar'
         run: bunzip2 node_modules.tar.bz2
