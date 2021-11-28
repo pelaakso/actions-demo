@@ -59,6 +59,7 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
+          cache-dependency-path: 'node-modules-caching/package-lock.json'
 
       - name: 'Restore node_modules cache'
         uses: actions/download-artifact@v2
@@ -86,6 +87,7 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
+          cache-dependency-path: 'node-modules-caching/package-lock.json'
 
       - name: 'Restore node_modules cache'
         uses: actions/download-artifact@v2
