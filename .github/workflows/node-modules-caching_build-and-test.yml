@@ -70,7 +70,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-modules-cache-${{ github.run_id }}
-          path: node-modules-caching/node_modules.tar.bz2
+          path: node-modules-caching
 
       - name: 'Debug: list files'
         run: ls -lR
