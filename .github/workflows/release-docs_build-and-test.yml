@@ -8,6 +8,10 @@ on:
     paths:
       - 'release-docs/**'
 
+defaults:
+  run:
+    working-directory: 'release-docs'
+
 jobs:
   build-and-test:
     name: Build and test

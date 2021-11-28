@@ -12,6 +12,10 @@ on:
     paths:
       - 'release-docs/**'
 
+defaults:
+  run:
+    working-directory: 'release-docs'
+
 jobs:
   create-draft-release:
     name: Create draft release
