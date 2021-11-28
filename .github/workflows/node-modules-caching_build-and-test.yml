@@ -65,6 +65,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-modules-cache-${{ github.run_id }}
+          path: node-modules-caching/node_modules.tar.bz2
 
       - name: 'Uncompress node_modules tar'
         run: bunzip2 node_modules.tar.bz2
@@ -93,6 +94,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-modules-cache-${{ github.run_id }}
+          path: node-modules-caching/node_modules.tar.bz2
 
       - name: 'Uncompress node_modules tar'
         run: bunzip2 node_modules.tar.bz2
