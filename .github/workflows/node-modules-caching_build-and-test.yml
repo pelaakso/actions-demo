@@ -3,8 +3,10 @@ name: Build and test - node-modules-caching
 # Run this workflow every time a new commit pushed to any branch except technical-docs
 on:
   push:
-    paths:
-      - 'node-modules-caching/**'
+    #paths:
+    #  - 'node-modules-caching/**'
+    branches:
+      - 'node-modules-caching'
 
 defaults:
   run:
@@ -25,6 +27,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
+          cache-dependency-path: 'node-modules-caching/package-lock.json'
 
       - name: 'Install deps'
         run: npm ci
