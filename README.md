@@ -1,7 +1,5 @@
 # actions-demo
-Test repo for GitHub Actions
 
-## Status
+Test repo for GitHub Actions.
 
-![Build and test](https://github.com/pelaakso/actions-demo/workflows/Build%20and%20test/badge.svg)
-
+* [release-docs](release-docs/): create a GitHub release when documentation is updated.

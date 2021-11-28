@@ -9,6 +9,12 @@ on:
       - 'technical-docs'
     tags-ignore:
       - 'technical-docs-v*'
+    paths:
+      - 'release-docs/**'
+
+defaults:
+  run:
+    working-directory: 'release-docs'
 
 jobs:
   create-draft-release:
@@ -32,4 +38,3 @@ jobs:
         run: |
           zip -j technical-specs-v${{ env.DOCS_VERSION }}.zip technical/api.txt
           gh release create technical-docs-v${{ env.DOCS_VERSION }} technical-specs-v${{ env.DOCS_VERSION }}.zip 'technical/api.txt#API specification' --draft --target technical-docs --title 'Technical documentation release ${{ env.DOCS_VERSION }}' --notes 'TBD: add description of changes'
-
