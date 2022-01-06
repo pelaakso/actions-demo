@@ -48,6 +48,7 @@ jobs:
 
       - name: 'Restore node_modules cache'
         uses: actions/download-artifact@v2
+        continue-on-error: true
         with:
           name: ${{ env.NMC_ARTIFACT_NAME }}.tar.bz2
           path: node-modules-caching
