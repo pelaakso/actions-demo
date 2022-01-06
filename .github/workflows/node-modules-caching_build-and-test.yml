@@ -1,6 +1,6 @@
 name: Build and test - node-modules-caching
 
-# Run this workflow every time a new commit pushed to any branch except technical-docs
+# Run this workflow every time a new commit pushed to any branch
 on:
   push:
     paths:
@@ -9,6 +9,11 @@ on:
 defaults:
   run:
     working-directory: 'node-modules-caching'
+
+env:
+  PACKAGE_LOCK_HASH: 'null'
+  NMC_EXISTS: 'no'
+  NMC_ARTIFACT_NAME: 'null'
 
 jobs:
   # This job installs NPM dependencies and caches them as a build artifact
@@ -28,85 +33,97 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'node-modules-caching/package-lock.json'
 
-      - name: 'Install deps'
-        run: npm ci
+      - name: 'Hash package-lock.json'
+        run: PACKAGE_LOCK_HASH=${{ hashFiles('node-modules-caching/package-lock.json') }}
 
-      - name: 'Tar node_modules'
-        run: tar cvf node_modules.tar node_modules
+      - name: '''
+        run: NMC_ARTIFACT_NAME=${{ node-modules-cache-$PACKAGE_LOCK_HASH }}
 
-      - name: 'Compress node_modules tar'
-        run: bzip2 -9 node_modules.tar
+      - name: 'Debug environment'
+        run: |
+          echo "PACKAGE_LOCK_HASH: $PACKAGE_LOCK_HASH"
+          echo "NMC_EXISTS: $NMC_EXISTS"
+          echo "NMC_ARTIFACT_NAME: $NMC_ARTIFACT_NAME"
 
-      - name: 'Cache node_modules as Artifact'
-        uses: actions/upload-artifact@v2
-        with:
-          name: node-modules-cache-${{ github.run_id }}
-          path: node-modules-caching/node_modules.tar.bz2
-          if-no-files-found: error
-          retention-days: 1
+      # - name: 'Install deps'
+      #   run: npm ci
 
-  # A demo job depending on node_modules
-  capitalize1:
-    name: capitalize1
-    needs: npm-install-and-cache
+      # - name: 'Tar node_modules'
+      #   run: tar cvf node_modules.tar node_modules
 
-    runs-on: ubuntu-latest
+      # - name: 'Compress node_modules tar'
+      #   run: bzip2 -9 node_modules.tar
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: 'Setup Node'
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: 'npm'
-          cache-dependency-path: 'node-modules-caching/package-lock.json'
-
-      - name: 'Restore node_modules cache'
-        uses: actions/download-artifact@v2
-        with:
-          name: node-modules-cache-${{ github.run_id }}
-          path: node-modules-caching
-
-      - name: 'Uncompress node_modules tar'
-        run: bunzip2 -v node_modules.tar.bz2
-
-      - name: 'Untar node_modules'
-        run: tar xvf node_modules.tar
-
-      - name: Run capitalize
-        run: npm run capitalize
+      # - name: 'Cache node_modules as Artifact'
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: node-modules-cache-${{ github.run_id }}
+      #     path: node-modules-caching/node_modules.tar.bz2
+      #     if-no-files-found: error
+      #     retention-days: 1
 
   # A demo job depending on node_modules
-  capitalize2:
-    name: capitalize2
-    needs: npm-install-and-cache
+  # capitalize1:
+  #   name: capitalize1
+  #   needs: npm-install-and-cache
 
-    runs-on: ubuntu-latest
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: 'Setup Node'
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: 'npm'
-          cache-dependency-path: 'node-modules-caching/package-lock.json'
+  #     - name: 'Setup Node'
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '14'
+  #         cache: 'npm'
+  #         cache-dependency-path: 'node-modules-caching/package-lock.json'
 
-      - name: 'Restore node_modules cache'
-        uses: actions/download-artifact@v2
-        with:
-          name: node-modules-cache-${{ github.run_id }}
-          path: node-modules-caching
+  #     - name: 'Restore node_modules cache'
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: node-modules-cache-${{ github.run_id }}
+  #         path: node-modules-caching
 
-      - name: 'Uncompress node_modules tar'
-        run: bunzip2 node_modules.tar.bz2
+  #     - name: 'Uncompress node_modules tar'
+  #       run: bunzip2 -v node_modules.tar.bz2
 
-      - name: 'Untar node_modules'
-        run: tar xvf node_modules.tar
+  #     - name: 'Untar node_modules'
+  #       run: tar xvf node_modules.tar
 
-      - name: Run capitalize
-        run: npm run capitalize
+  #     - name: Run capitalize
+  #       run: npm run capitalize
+
+  # A demo job depending on node_modules
+  # capitalize2:
+  #   name: capitalize2
+  #   needs: npm-install-and-cache
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+
+  #     - name: 'Setup Node'
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '14'
+  #         cache: 'npm'
+  #         cache-dependency-path: 'node-modules-caching/package-lock.json'
+
+  #     - name: 'Restore node_modules cache'
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: node-modules-cache-${{ github.run_id }}
+  #         path: node-modules-caching
+
+  #     - name: 'Uncompress node_modules tar'
+  #       run: bunzip2 node_modules.tar.bz2
+
+  #     - name: 'Untar node_modules'
+  #       run: tar xvf node_modules.tar
+
+  #     - name: Run capitalize
+  #       run: npm run capitalize
