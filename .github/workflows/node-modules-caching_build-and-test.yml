@@ -38,7 +38,7 @@ jobs:
         run: echo "PACKAGE_LOCK_HASH=${{ hashFiles('node-modules-caching/package-lock.json') }}" >> $GITHUB_ENV
 
       - name: 'Set artifact name'
-        run: echo "NMC_ARTIFACT_NAME=${{ node-modules-cache-$PACKAGE_LOCK_HASH }}" >> $GITHUB_ENV
+        run: echo "NMC_ARTIFACT_NAME=${{ node-modules-cache-env.PACKAGE_LOCK_HASH }}" >> $GITHUB_ENV
 
       - name: 'Debug environment'
         run: |
