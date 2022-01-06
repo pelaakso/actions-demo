@@ -13,7 +13,7 @@ defaults:
 
 env:
   PACKAGE_LOCK_HASH: 'null'
-  NMC_EXISTS: 'no'
+  NMC_ARTIFACT_EXISTS: 'no'
   NMC_ARTIFACT_NAME: 'null'
 
 jobs:
@@ -43,11 +43,22 @@ jobs:
       - name: 'Debug environment'
         run: |
           echo "PACKAGE_LOCK_HASH: $PACKAGE_LOCK_HASH"
-          echo "NMC_EXISTS: $NMC_EXISTS"
+          echo "NMC_ARTIFACT_EXISTS: $NMC_ARTIFACT_EXISTS"
           echo "NMC_ARTIFACT_NAME: $NMC_ARTIFACT_NAME"
 
-      # - name: 'Install deps'
-      #   run: npm ci
+      - name: 'Restore node_modules cache'
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.NMC_ARTIFACT_NAME }}.tar.bz2
+          path: node-modules-caching
+
+      - name: 'Does a cached node_modules exist?'
+        if: ${{ success() }}
+        run: echo "NMC_ARTIFACT_EXISTS=yes" >> $GITHUB_ENV
+
+      - name: 'Install deps if no node_modules cache'
+        if: ${{ env.NMC_ARTIFACT_EXISTS == "no" }}
+        run: npm ci
 
       # - name: 'Tar node_modules'
       #   run: tar cvf node_modules.tar node_modules
