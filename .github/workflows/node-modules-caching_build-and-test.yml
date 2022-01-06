@@ -47,6 +47,7 @@ jobs:
           echo "NMC_ARTIFACT_NAME: $NMC_ARTIFACT_NAME"
 
       - name: 'Restore node_modules cache'
+        id: 'restore'
         uses: actions/download-artifact@v2
         continue-on-error: true
         with:
@@ -54,10 +55,10 @@ jobs:
           path: node-modules-caching
 
       - name: 'Does a cached node_modules exist?'
-        if: ${{ success() }}
+        if: ${{ steps.restore.outcome == 'success' }}
         run: echo "NMC_ARTIFACT_EXISTS=yes" >> $GITHUB_ENV
 
-      - name: 'Install deps if no node_modules cache'
+      - name: 'Install deps if no node_modules cache exists'
         if: ${{ env.NMC_ARTIFACT_EXISTS == 'no' }}
         run: npm ci
 
