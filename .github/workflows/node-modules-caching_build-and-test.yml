@@ -57,7 +57,7 @@ jobs:
         run: echo "NMC_ARTIFACT_EXISTS=yes" >> $GITHUB_ENV
 
       - name: 'Install deps if no node_modules cache'
-        if: ${{ env.NMC_ARTIFACT_EXISTS == "no" }}
+        if: ${{ env.NMC_ARTIFACT_EXISTS == 'no' }}
         run: npm ci
 
       # - name: 'Tar node_modules'
