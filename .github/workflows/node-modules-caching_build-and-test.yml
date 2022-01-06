@@ -80,37 +80,43 @@ jobs:
           retention-days: 1
 
   # A demo job depending on node_modules
-  # capitalize1:
-  #   name: capitalize1
-  #   needs: npm-install-and-cache
+  capitalize1:
+    name: capitalize1
+    needs: npm-install-and-cache
 
-  #   runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: 'Setup Node'
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14'
-  #         cache: 'npm'
-  #         cache-dependency-path: 'node-modules-caching/package-lock.json'
+      - name: 'Setup Node'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+          cache-dependency-path: 'node-modules-caching/package-lock.json'
 
-  #     - name: 'Restore node_modules cache'
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: node-modules-cache-${{ github.run_id }}
-  #         path: node-modules-caching
+      - name: 'Debug environment'
+        run: |
+          echo "PACKAGE_LOCK_HASH: $PACKAGE_LOCK_HASH"
+          echo "NMC_ARTIFACT_EXISTS: $NMC_ARTIFACT_EXISTS"
+          echo "NMC_ARTIFACT_NAME: $NMC_ARTIFACT_NAME"
 
-  #     - name: 'Uncompress node_modules tar'
-  #       run: bunzip2 -v node_modules.tar.bz2
+      - name: 'Restore node_modules cache'
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.NMC_ARTIFACT_NAME }}
+          path: node-modules-caching
 
-  #     - name: 'Untar node_modules'
-  #       run: tar xvf node_modules.tar
+      - name: 'Uncompress node_modules tar'
+        run: bunzip2 -v node_modules.tar.bz2
 
-  #     - name: Run capitalize
-  #       run: npm run capitalize
+      - name: 'Untar node_modules'
+        run: tar xvf node_modules.tar
+
+      - name: Run capitalize
+        run: npm run capitalize
 
   # A demo job depending on node_modules
   # capitalize2:
