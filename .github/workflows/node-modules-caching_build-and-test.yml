@@ -51,7 +51,7 @@ jobs:
         uses: actions/download-artifact@v2
         continue-on-error: true
         with:
-          name: ${{ env.NMC_ARTIFACT_NAME }}.tar.bz2
+          name: ${{ env.NMC_ARTIFACT_NAME }}
           path: node-modules-caching
 
       - name: 'Does a cached node_modules exist?'
@@ -74,7 +74,7 @@ jobs:
         if: ${{ env.NMC_ARTIFACT_EXISTS == 'no' }}
         uses: actions/upload-artifact@v2
         with:
-          name: node-modules-cache-${{ github.run_id }}
+          name: ${{ env.NMC_ARTIFACT_NAME }}
           path: node-modules-caching/node_modules.tar.bz2
           if-no-files-found: error
           retention-days: 1
