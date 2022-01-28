@@ -28,10 +28,10 @@ jobs:
         run: |
           mkdir -p ${{ env.TMP_DIR }}
 
-      - name: Checkout staging branch
-        run: |
-          git checkout staging-branch
-          git pull
+#      - name: Checkout staging branch
+#        run: |
+#          git checkout staging-branch
+#          git pull
 
       - name: Find date and time
         id: date-time
