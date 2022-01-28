@@ -6,7 +6,7 @@ on:
 
 env:
   TMP_DIR: '~/tmp'
-  ALL_CHANGES_FILE: '~/tmp/all_changes.txt'
+  PR_MESSAGE_FILE: '~/tmp/pr_message.txt'
 
 defaults:
   run:
@@ -33,11 +33,18 @@ jobs:
           git checkout staging-branch
           git pull
 
-      - name: List all changes
-        run: git log --pretty='%h - %s (%an)' staging-branch..master > ${{ env.ALL_CHANGES_FILE }}
+      - name: Find date and time
+        id: date-time
+        run: |
+          echo "::set-output name=date_utc::$(date +'%Y-%m-%d')"
+          echo "::set-output name=time_utc::$(date +'%H:%M:%S')"
+
+      - name: Create PR message
+        run: |
+          echo "See the commits below that will be included in this release candidate." >> ${{ env.PR_MESSAGE_FILE }}
 
       - name: Create PR to merge master into staging-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr create --base staging-branch --head master --title 'Release candidate' --body-file ${{ env.ALL_CHANGES_FILE }}
+          gh pr create --base staging-branch --head master --title 'Release candidate ${{ steps.date-time.output.date_utc }} ${{ steps.date-time.output.date_utc }} UTC' --body-file ${{ env.PR_MESSAGE_FILE }}
