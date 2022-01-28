@@ -40,4 +40,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pr create --base staging-branch --head master --title 'Release candidate' --body-file ${{ env.ALL_CHANGES_FILE }}
+          gh pr create --base staging-branch --head master --title 'Release candidate' --body-file ${{ env.ALL_CHANGES_FILE }}
