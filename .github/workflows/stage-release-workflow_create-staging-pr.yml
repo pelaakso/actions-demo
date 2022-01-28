@@ -36,9 +36,8 @@ jobs:
       - name: List all changes
         run: git log --pretty='%h - %s (%an)' staging-branch..master > ${{ env.ALL_CHANGES_FILE }}
 
-      - name: Create draft release
+      - name: Create PR to merge master into staging-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          zip -j technical-specs-v${{ env.DOCS_VERSION }}.zip technical/api.txt
-          gh release create technical-docs-v${{ env.DOCS_VERSION }} technical-specs-v${{ env.DOCS_VERSION }}.zip 'technical/api.txt#API specification' --draft --target technical-docs --title 'Technical documentation release ${{ env.DOCS_VERSION }}' --notes 'TBD: add description of changes'
+          pr create --base staging-branch --head master --title 'Release candidate' --body-file ${{ env.ALL_CHANGES_FILE }}
