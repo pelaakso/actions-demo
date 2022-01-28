@@ -1,0 +1,41 @@
+name: Create staging PR
+
+# Run this workflow manually
+on:
+  workflow_dispatch:
+
+env:
+  TMP_DIR: '~/tmp'
+  ALL_CHANGES_FILE: ${{ TMP_DIR }}/all_changes.txt
+
+defaults:
+  run:
+    working-directory: 'stage-release-workflow'
+
+jobs:
+  create-staging-pr:
+    name: Create staging PR
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Full checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Create temporary directory
+        run: |
+          mkdir -p ${{ env.TMP_DIR }}
+
+      - name: Checkout staging branch
+        run: |
+          git checkout qa2-branch
+          git pull
+
+      - name: Create draft release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          zip -j technical-specs-v${{ env.DOCS_VERSION }}.zip technical/api.txt
+          gh release create technical-docs-v${{ env.DOCS_VERSION }} technical-specs-v${{ env.DOCS_VERSION }}.zip 'technical/api.txt#API specification' --draft --target technical-docs --title 'Technical documentation release ${{ env.DOCS_VERSION }}' --notes 'TBD: add description of changes'
