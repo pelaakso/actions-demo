@@ -6,7 +6,7 @@ on:
 
 env:
   TMP_DIR: '~/tmp'
-  ALL_CHANGES_FILE: ${{ TMP_DIR }}/all_changes.txt
+  ALL_CHANGES_FILE: '~/tmp/all_changes.txt'
 
 defaults:
   run:
