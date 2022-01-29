@@ -1,0 +1,43 @@
+name: Initiate release creation
+
+# Run this workflow manually
+on:
+  workflow_dispatch:
+
+env:
+  TMP_DIR: '~/tmp'
+  PR_MESSAGE_FILE: '~/tmp/pr_message.txt'
+
+defaults:
+  run:
+    working-directory: 'stage-release-workflow'
+
+jobs:
+  initiate-release-creation:
+    name: Initiate release creation
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Find date and time
+        id: date-time
+        run: |
+          echo "::set-output name=date_utc::$(date +'%Y-%m-%d')"
+          echo "::set-output name=time_utc::$(date +'%H:%M:%S')"
+
+      - name: Create temporary directory
+        run: |
+          mkdir -p ${{ env.TMP_DIR }}
+
+      - name: Create PR message
+        run: |
+          echo "See the commits below that will be included in this release." >> ${{ env.PR_MESSAGE_FILE }}
+
+      - name: Create PR to merge staging-branch into production branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create --base prod-branch --head staging-branch --title 'Release ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --body-file ${{ env.PR_MESSAGE_FILE }}
