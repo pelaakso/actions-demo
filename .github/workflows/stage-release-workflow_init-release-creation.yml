@@ -5,6 +5,8 @@ on:
   workflow_dispatch:
 
 env:
+  STAGING_BRANCH_NAME: 'staging-branch'
+  PRODUCTION_BRANCH_NAME: 'prod-branch'
   TMP_DIR: '~/tmp'
   PR_MESSAGE_FILE: '~/tmp/pr_message.txt'
 
@@ -40,4 +42,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr create --base prod-branch --head staging-branch --title 'Release ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --body-file ${{ env.PR_MESSAGE_FILE }}
+          gh pr create --base ${{ env.PRODUCTION_BRANCH_NAME }} --head ${{ env.STAGING_BRANCH_NAME }} --title 'Release ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --body-file ${{ env.PR_MESSAGE_FILE }}
