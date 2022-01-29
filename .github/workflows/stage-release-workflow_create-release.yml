@@ -26,8 +26,13 @@ jobs:
           echo "::set-output name=date_utc::$(date +'%Y-%m-%d')"
           echo "::set-output name=time_utc::$(date +'%H:%M:%S')"
 
+      - name: Create release tag
+        id: release-tag
+        run: |
+          echo "::set-output name=tag_name::$(date +'%Y%m%dT%H%M%S')"
+
       - name: Create GHA release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create release-${{ steps.date-time.outputs.date_utc }}T${{ steps.date-time.outputs.time_utc }} --target prod-branch --title 'Release ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --generate-notes
+          gh release create release-${{ steps.release-tag.outputs.tag_name }} --target prod-branch --title 'Release ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --generate-notes
