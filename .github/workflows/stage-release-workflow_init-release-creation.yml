@@ -1,4 +1,4 @@
-name: Create staging PR
+name: Initiate release creation
 
 # Run this workflow manually
 on:
@@ -13,8 +13,8 @@ defaults:
     working-directory: 'stage-release-workflow'
 
 jobs:
-  create-staging-pr:
-    name: Create staging PR
+  initiate-release-creation:
+    name: Initiate release creation
 
     runs-on: ubuntu-latest
 
@@ -22,22 +22,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create temporary directory
-        run: |
-          mkdir -p ${{ env.TMP_DIR }}
-
       - name: Find date and time
         id: date-time
         run: |
           echo "::set-output name=date_utc::$(date +'%Y-%m-%d')"
           echo "::set-output name=time_utc::$(date +'%H:%M:%S')"
 
+      - name: Create temporary directory
+        run: |
+          mkdir -p ${{ env.TMP_DIR }}
+
       - name: Create PR message
         run: |
-          echo "See the commits below that will be included in this release candidate." >> ${{ env.PR_MESSAGE_FILE }}
+          echo "See the commits below that will be included in this release." >> ${{ env.PR_MESSAGE_FILE }}
 
-      - name: Create PR to merge master into staging-branch
+      - name: Create PR to merge staging-branch into production branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr create --base staging-branch --head master --title 'Release candidate ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --body-file ${{ env.PR_MESSAGE_FILE }}
+          gh pr create --base prod-branch --head staging-branch --title 'Release ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --body-file ${{ env.PR_MESSAGE_FILE }}

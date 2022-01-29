@@ -1,0 +1,33 @@
+name: Create release
+
+# Run this workflow manually
+on:
+  push:
+    branches:
+      - 'prod-branch'
+
+defaults:
+  run:
+    working-directory: 'stage-release-workflow'
+
+jobs:
+  initiate-release-creation:
+    name: Create release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Find date and time
+        id: date-time
+        run: |
+          echo "::set-output name=date_utc::$(date +'%Y-%m-%d')"
+          echo "::set-output name=time_utc::$(date +'%H:%M:%S')"
+
+      - name: Create PR to merge staging-branch into production branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create --target prod-branch --title 'Release ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --generate-notes

@@ -1,0 +1,29 @@
+name: Build & test
+
+# Run this workflow manually
+on:
+  push:
+    paths:
+      - 'stage-release-workflow/**'
+    branches:
+      - 'master'
+      - 'staging-branch'
+      - 'prod-branch'
+
+defaults:
+  run:
+    working-directory: 'stage-release-workflow'
+
+jobs:
+  build-and-test:
+    name: Build & test
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test
+        run: |
+          npm run test
