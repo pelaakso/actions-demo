@@ -26,8 +26,8 @@ jobs:
           echo "::set-output name=date_utc::$(date +'%Y-%m-%d')"
           echo "::set-output name=time_utc::$(date +'%H:%M:%S')"
 
-      - name: Create PR to merge staging-branch into production branch
+      - name: Create GHA release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create --target prod-branch --title 'Release ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --generate-notes
+          gh release create release-${{ steps.date-time.outputs.date_utc }}T${{ steps.date-time.outputs.time_utc }} --target prod-branch --title 'Release ${{ steps.date-time.outputs.date_utc }} ${{ steps.date-time.outputs.time_utc }} UTC' --generate-notes
