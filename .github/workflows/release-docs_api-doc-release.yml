@@ -6,15 +6,15 @@ on:
     branches:
       # master only while developing
       #- 'master'
-      - 'technical-docs'
+      - "technical-docs"
     tags-ignore:
-      - 'technical-docs-v*'
+      - "technical-docs-v*"
     paths:
-      - 'release-docs/**'
+      - "release-docs/**"
 
 defaults:
   run:
-    working-directory: 'release-docs'
+    working-directory: "release-docs"
 
 jobs:
   create-draft-release:
@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Determine version
         run: "echo DOCS_VERSION=$(grep VERSION= technical/version.txt | sed -e s/VERSION=//) >> $GITHUB_ENV"
