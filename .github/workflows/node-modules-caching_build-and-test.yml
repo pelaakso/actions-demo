@@ -39,7 +39,7 @@ jobs:
         run: bzip2 -9 node_modules.tar
 
       - name: "Cache node_modules as Artifact"
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: node-modules-cache-${{ github.run_id }}
           path: node-modules-caching/node_modules.tar.bz2
