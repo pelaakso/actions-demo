@@ -5,14 +5,14 @@ on:
   workflow_dispatch:
 
 env:
-  STAGING_BRANCH_NAME: 'staging-branch'
-  MAIN_BRANCH_NAME: 'master'
-  TMP_DIR: '~/tmp'
-  PR_MESSAGE_FILE: '~/tmp/pr_message.txt'
+  STAGING_BRANCH_NAME: "staging-branch"
+  MAIN_BRANCH_NAME: "master"
+  TMP_DIR: "~/tmp"
+  PR_MESSAGE_FILE: "~/tmp/pr_message.txt"
 
 defaults:
   run:
-    working-directory: 'stage-release-workflow'
+    working-directory: "stage-release-workflow"
 
 jobs:
   create-staging-pr:
@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Create temporary directory
         run: |

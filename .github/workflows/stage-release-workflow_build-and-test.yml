@@ -4,15 +4,15 @@ name: Build & test
 on:
   push:
     paths:
-      - 'stage-release-workflow/**'
+      - "stage-release-workflow/**"
     branches:
-      - 'master'
-      - 'staging-branch'
-      - 'prod-branch'
+      - "master"
+      - "staging-branch"
+      - "prod-branch"
 
 defaults:
   run:
-    working-directory: 'stage-release-workflow'
+    working-directory: "stage-release-workflow"
 
 jobs:
   build-and-test:
@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Test
         run: |

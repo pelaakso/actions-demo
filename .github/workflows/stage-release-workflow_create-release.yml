@@ -4,11 +4,11 @@ name: Create release
 on:
   push:
     branches:
-      - 'prod-branch'
+      - "prod-branch"
 
 defaults:
   run:
-    working-directory: 'stage-release-workflow'
+    working-directory: "stage-release-workflow"
 
 jobs:
   initiate-release-creation:
@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Find date and time
         id: date-time
